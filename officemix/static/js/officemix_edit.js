@@ -1,10 +1,9 @@
-function SimpleVideoEditBlock(runtime, element) {
+function OfficeMixEditBlock(runtime, element) {
   $(element).find('.save-button').bind('click', function() {
     var handlerUrl = runtime.handlerUrl(element, 'studio_submit');
     var data = {
       href: $(element).find('input[name=href]').val(),
-      maxwidth: $(element).find('input[name=maxwidth]').val(),
-      maxheight: $(element).find('input[name=maxheight]').val()
+      display_name: $(element).find('input[name=display-name]').val(),
     };
     $.post(handlerUrl, JSON.stringify(data)).done(function(response) {
       window.location.reload(false);
