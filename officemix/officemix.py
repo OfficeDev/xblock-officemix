@@ -8,6 +8,7 @@ inserts it within the XBlock.
 
 """
 
+import cgi
 import decimal
 import pkg_resources
 import requests
@@ -50,7 +51,7 @@ class OfficeMixXBlock(XBlock):
         display_name = self.display_name or ''
 
         html_str = self.resource_string("static/html/officemix_edit.html")
-        frag = Fragment(html_str.format(href=href, display_name=display_name))
+        frag = Fragment(html_str.format(href=cgi.escape(href), display_name=cgi.escape(display_name)))
 
         js_str = self.resource_string("/static/js/officemix_edit.js")
         frag.add_javascript(js_str)
@@ -78,7 +79,7 @@ class OfficeMixXBlock(XBlock):
             html_str = self.resource_string("static/html/officemix.html") 
         except Exception as ex:
             html_str = self.resource_string("static/html/embed_error.html")
-            frag = Fragment(html_str.format(self=self, exception=ex))
+            frag = Fragment(html_str.format(self=self, exception=cgi.escape(str(ex))))
             return frag
 
         # Grab and round the aspect ratio
@@ -88,11 +89,11 @@ class OfficeMixXBlock(XBlock):
         frag = Fragment(html_str.format(
             self=self, 
             embed_code=embed_code,
-            display_name=display_name))
+            display_name=cgi.escape(display_name)))
 
         # And construct the CSS
         css_str = self.resource_string("static/css/officemix.css")
-        css_str = string.replace(unicode(css_str), "{aspect_ratio}", unicode(round(ratio, 2)))
+        css_str = string.replace(unicode(css_str), "{aspect_ratio}", cgi.escape(unicode(round(ratio, 2))))
         frag.add_css(css_str)
         
         return frag
