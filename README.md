@@ -2,6 +2,8 @@ Office Mix XBlock
 =================
 This XBlock allows for the embedding of lectures hosted on [Office Mix](https://mix.office.com) directly into an edX course. Students can then view the mixes natively on edX.org.
 
+See it in action by watching this [Office Mix XBlock introduction mix](https://mix.office.com/watch/1vxsk29nweg3x).
+
 Installation
 ------------
 To install the Office Mix XBlock within your edX python environment simply run.
