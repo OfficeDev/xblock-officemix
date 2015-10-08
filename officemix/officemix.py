@@ -15,10 +15,11 @@ import requests
 import string
 
 from xblock.core import XBlock
-from xblock.fields import Scope, Integer, String
+from xblock.fields import Scope, String
 from xblock.fragment import Fragment
 
-class OfficeMixXBlock(XBlock):
+
+class OfficeMixXBlock(XBlock):  # pylint: disable=too-many-ancestors
     """
     An XBlock providing Office Mix embedding capabilities
     """
@@ -36,12 +37,7 @@ class OfficeMixXBlock(XBlock):
         scope=Scope.settings,
         default="Office Mix")
 
-    def resource_string(self, path):
-        """Handy helper for getting resources from our kit."""
-        data = pkg_resources.resource_string(__name__, path)
-        return data.decode("utf8")
-
-    def studio_view(self, context):
+    def studio_view(self, context):  # pylint: disable=unused-argument
         """
         Studio view part
         """
@@ -62,7 +58,7 @@ class OfficeMixXBlock(XBlock):
 
         return frag
 
-    def student_view(self, context=None):
+    def student_view(self, context=None):  # pylint: disable=unused-argument
         """
         Create a fragment used to display the XBlock to a student
         `context` is a dictionary used to configure the display (unused).
@@ -76,7 +72,7 @@ class OfficeMixXBlock(XBlock):
         try:
             embed_code, width, height = self.get_embed_code(href)
             html_str = self.resource_string("static/html/officemix.html")
-        except Exception as ex:
+        except requests.exceptions.HTTPError as ex:
             html_str = self.resource_string("static/html/embed_error.html")
             frag = Fragment(html_str.format(self=self, exception=cgi.escape(str(ex))))
             return frag
@@ -103,16 +99,19 @@ class OfficeMixXBlock(XBlock):
         return frag
 
     @XBlock.json_handler
-    def studio_submit(self, data, suffic=''):
+    def studio_submit(self, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        AJAX handler to save the XBlock settings on Studio.
+        """
         self.href = data.get('href')
         self.display_name = data.get('display_name')
 
         return {'result': 'success'}
 
     @XBlock.json_handler
-    def publish_event(self, data, suffix=''):
+    def publish_event(self, data, suffix=''):  # pylint: disable=unused-argument
         """
-        AJAX handler to allow client-side code to publish a server-side event
+        AJAX handler to allow client-side code to publish a server-side event.
         """
         try:
             event_type = data.pop('event_type')
@@ -122,19 +121,29 @@ class OfficeMixXBlock(XBlock):
         self.runtime.publish(self, event_type, data)
         return {'result': 'success'}
 
-    def get_embed_code(self, url):
+    @staticmethod
+    def resource_string(path):
+        """
+        Handy helper for getting resources from our kit.
+        """
+
+        data = pkg_resources.resource_string(__name__, path)
+        return data.decode("utf8")
+
+    @staticmethod
+    def get_embed_code(url):
         """
         Makes an oEmbed call out to Office Mix to retrieve the embed code and width and height of the mix
         for the given url.
         """
 
-        parameters = { 'url': url }
+        parameters = {'url': url}
 
-        oEmbedRequest = requests.get("https://mix.office.com/oembed/", params = parameters)
-        oEmbedRequest.raise_for_status()
-        responseJson = oEmbedRequest.json()
+        oembed_request = requests.get("https://mix.office.com/oembed/", params=parameters)
+        oembed_request.raise_for_status()
+        response_json = oembed_request.json()
 
-        return responseJson['html'], responseJson['width'], responseJson['height']
+        return response_json['html'], response_json['width'], response_json['height']
 
     @staticmethod
     def workbench_scenarios():
