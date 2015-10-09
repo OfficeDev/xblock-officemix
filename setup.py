@@ -3,6 +3,7 @@
 import os
 from setuptools import setup
 
+
 def package_data(pkg, roots):
     """Generic function to find package_data.
 
