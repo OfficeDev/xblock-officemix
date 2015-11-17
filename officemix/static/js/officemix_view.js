@@ -8,7 +8,7 @@ function OfficeMixBlock(runtime, element) {
     player.on('ready', function () {
         player.getDuration(function (duration) {
             var data = {
-                'event_type': 'xblock.officemix.loaded',
+                'event_type': 'microsoft.office.mix.loaded',
                 url: mixUrl,
                 duration: duration
             };
@@ -19,7 +19,7 @@ function OfficeMixBlock(runtime, element) {
         player.on('play', function () {
             player.getCurrentTime(function (value) {
                 var data = {
-                    'event_type': 'xblock.officemix.played',
+                    'event_type': 'microsoft.office.mix.played',
                     url: mixUrl,
                     time: value
                 };
@@ -31,7 +31,7 @@ function OfficeMixBlock(runtime, element) {
         player.on('pause', function () {
             player.getCurrentTime(function (value) {
                 var data = {
-                    'event_type': 'xblock.officemix.paused',
+                    'event_type': 'microsoft.office.mix.paused',
                     url: mixUrl,
                     time: value
                 };
@@ -42,7 +42,7 @@ function OfficeMixBlock(runtime, element) {
 
         player.on('ended', function () {
             var data = {
-                'event_type': 'xblock.officemix.stopped',
+                'event_type': 'microsoft.office.mix.stopped',
                 url: mixUrl
             };
 
