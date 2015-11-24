@@ -29,10 +29,10 @@ function OfficeMixBlock(runtime, element) {
         player.getDuration(function (duration) {
             player.send({ method: 'getPageCount' }, function (totalSlides) {
                 var data = {
-		    'event_type': 'microsoft.office.mix.loaded',
+                    event_type: 'microsoft.office.mix.loaded',
                     url: mixUrl,
                     duration: duration,
-                    totalSlides: totalSlides
+                    total_slides: totalSlides
                 };
 
                 $.post(eventUrl, JSON.stringify(data));
@@ -42,10 +42,10 @@ function OfficeMixBlock(runtime, element) {
         player.on('play', function () {
             getCurrentTimeAndSlide(function (currentTime, currentSlide) {
                 var data = {
-                    'event_type': 'microsoft.office.mix.played',
+                    event_type: 'microsoft.office.mix.played',
                     url: mixUrl,
-                    currentTime: currentTime,
-                    currentSlide: currentSlide
+                    current_time: currentTime,
+                    current_slide: currentSlide
                 };
 
                 $.post(eventUrl, JSON.stringify(data));
@@ -55,10 +55,10 @@ function OfficeMixBlock(runtime, element) {
         player.on('pause', function () {
             getCurrentTimeAndSlide(function (currentTime, currentSlide) {
                 var data = {
-                    'event_type': 'microsoft.office.mix.paused',
+                    event_type: 'microsoft.office.mix.paused',
                     url: mixUrl,
-                    currentTime: currentTime,
-                    currentSlide: currentSlide
+                    current_time: currentTime,
+                    current_slide: currentSlide
                 };
 
                 $.post(eventUrl, JSON.stringify(data));
@@ -67,7 +67,7 @@ function OfficeMixBlock(runtime, element) {
 
         player.on('ended', function () {
             var data = {
-                'event_type': 'microsoft.office.mix.stopped',
+                event_type: 'microsoft.office.mix.stopped',
                 url: mixUrl
             };
 
@@ -76,7 +76,7 @@ function OfficeMixBlock(runtime, element) {
 
         player.on('pageupdate', function (pageUpdateEvent) {
             var data = {
-                'event_type': 'microsoft.office.mix.slide_changed',
+                event_type: 'microsoft.office.mix.slide.loaded',
                 url: mixUrl,
                 slide: convertSlideIndex(pageUpdateEvent.page) 
             };
