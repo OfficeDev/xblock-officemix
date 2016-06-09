@@ -12,6 +12,23 @@ To install the Office Mix XBlock within your edX python environment simply run.
 $ pip install -r requirements.txt
 ```
 
+Production Installation
+-----------------------
+To install the Office Mix XBlock within your edX production environment, ssh to the production deployment and run
+
+```bash
+sudo su edxapp -s /bin/bash # change the user to edxapp
+cd /edx/app/edxapp # change to where the edxapp is deployed
+git clone https://github.com/beacloudgenius/xblock-officemix.git # clone this as a sibling folder
+exit # exit from the edxapp user because it does not have sudo priv. 
+
+# now back as ubuntu user that has sudo priv
+cd /edx/app/edxapp/xblock-officemix/  # enter the folder containing this xblock source
+sudo pip install -r requirements.txt # gather and install requirements
+cd /edx/app/edxapp # go to edxapp folder
+sudo -u edxapp /edx/bin/pip.edxapp install xblock-officemix/ # use pip to install this xblock in the production deployment
+```
+
 Enabling in Studio
 ------------------
 
